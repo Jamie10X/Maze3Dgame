@@ -24,9 +24,9 @@ class Game:
 
     def find_exit(self):
         """Find the exit position (marked by '9') in the map grid."""
-        for pos, value in self.map.world_map.items():
+        for (i, j), value in self.map.world_map.items():
             if value == 9:
-                return pos
+                return i + 0.5, j + 0.5  # Center the exit in the grid cell
         return None
 
     def update(self):
@@ -46,12 +46,14 @@ class Game:
                 self.running = False
 
         # Check if the player reached the exit (proximity check)
-        exit_x, exit_y = self.exit_position
-        player_x, player_y = self.player.pos  # Player's precise coordinates
+        if self.exit_position:
+            exit_x, exit_y = self.exit_position  # Exit position (float center)
+            player_x, player_y = self.player.pos  # Player's exact position
 
-        if abs(player_x - exit_x) < 0.5 and abs(player_y - exit_y) < 0.5:  # Check proximity
-            print("You Win! Congratulations!")
-            self.running = False
+            # Allow small tolerance for reaching the exit
+            if abs(player_x - exit_x) < 0.5 and abs(player_y - exit_y) < 0.5:
+                print("You Win! Congratulations!")
+                self.running = False
 
     def run(self):
         print("Game Started! Navigate through the maze and find the exit.")

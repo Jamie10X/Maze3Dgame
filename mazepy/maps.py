@@ -41,6 +41,6 @@ class Map:
         world_map = {}
         for j, row in enumerate(self.grid):
             for i, cell in enumerate(row):
-                if cell:
+                if cell:  # Add all non-zero tiles (walls, exit, etc.)
                     world_map[(i, j)] = cell
         return world_map
