@@ -60,4 +60,5 @@ class Player:
 
     @property
     def map_pos(self):
+        """Returns player's current grid position as integers."""
         return int(self.x), int(self.y)

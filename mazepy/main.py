@@ -26,7 +26,8 @@ class Game:
         """Find the exit position (marked by '9') in the map grid."""
         for (i, j), value in self.map.world_map.items():
             if value == 9:
-                return i + 0.5, j + 0.5  # Center the exit in the grid cell
+                # Return the exact center of the exit tile
+                return i + 0.5, j + 0.5
         return None
 
     def update(self):
@@ -45,13 +46,13 @@ class Game:
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 self.running = False
 
-        # Check if the player reached the exit (proximity check)
+        # Check if the player reached the exit tile
         if self.exit_position:
-            exit_x, exit_y = self.exit_position  # Exit position (float center)
-            player_x, player_y = self.player.pos  # Player's exact position
+            player_tile_x, player_tile_y = self.player.map_pos  # Player's grid position (int)
+            exit_tile_x, exit_tile_y = int(self.exit_position[0]), int(self.exit_position[1])
 
-            # Allow small tolerance for reaching the exit
-            if abs(player_x - exit_x) < 0.5 and abs(player_y - exit_y) < 0.5:
+            # Exact match check on the grid position
+            if player_tile_x == exit_tile_x and player_tile_y == exit_tile_y:
                 print("You Win! Congratulations!")
                 self.running = False
 
